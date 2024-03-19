@@ -18,38 +18,20 @@ import time
 import board
 from adafruit_lsm6ds.lsm6dsox import LSM6DSOX as LSM6DS
 from adafruit_lis3mdl import LIS3MDL
-from git import Repo
 from picamera2 import Picamera2
+from queue import Queue
 
 #VARIABLES
 THRESHOLD = 0      #Any desired value from the accelerometer
-REPO_PATH = ""     #Your github repo path: ex. /home/pi/FlatSatChallenge
-FOLDER_PATH = ""   #Your image folder path in your GitHub repo: ex. /Images
+REPO_PATH = "/home/olympians/Olympian"     #Your github repo path: ex. /home/pi/FlatSatChallenge
+FOLDER_PATH = "Images"   #Your image folder path in your GitHub repo: ex. /Images
 
+queue = Queue()
 #imu and camera initialization
 i2c = board.I2C()
-accel_gyro = LSM6DS(i2c)
-mag = LIS3MDL(i2c)
+#accel_gyro = LSM6DS(i2c)
+#mag = LIS3MDL(i2c)
 picam2 = Picamera2()
-
-
-def git_push():
-    """
-    This function is complete. Stages, commits, and pushes new images to your GitHub repo.
-    """
-    try:
-        repo = Repo(REPO_PATH)
-        origin = repo.remote('origin')
-        print('added remote')
-        origin.pull()
-        print('pulled changes')
-        repo.git.add(REPO_PATH + FOLDER_PATH)
-        repo.index.commit('New Photo')
-        print('made the commit')
-        origin.push()
-        print('pushed changes')
-    except:
-        print('Couldn\'t upload to git')
 
 
 def img_gen(name):
@@ -70,19 +52,43 @@ def take_photo():
     Replace psuedocode with your own code.
     """
     while True:
-        accelx, accely, accelz = accel_gyro.acceleration
+        # accelx, accely, accelz = accel_gyro.acceleration
 
         #CHECKS IF READINGS ARE ABOVE THRESHOLD
             #PAUSE
-            #name = ""     #First Name, Last Initial  ex. MasonM
+
+
+        name = "Aerodynamic Grapefuits^3"
+
+        filePath = img_gen(name)
+
+        picam2.start_and_capture_file(filePath)
             #TAKE PHOTO
             #PUSH PHOTO TO GITHUB
         
         #PAUSE
 
+        return filePath
+
+
+def transmit_photo(filePath):
+    # decode img from file
+    # convert to byte stream
+    # use stream to transmit data over bluetooth
+
+    return False
+
 
 def main():
-    take_photo()
+    # while true, follow state machine
+    time.sleep(3)
+     # FIXME: queue.add(take_photo())
+    
+    queue.put(take_photo())
+    # maybe transmit photo on different thread?
+
+    # there's a lot of asynchronous stuff going on here...
+
 
 
 if __name__ == '__main__':
