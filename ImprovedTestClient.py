@@ -26,9 +26,12 @@ for img_name in imgs :
    # Confirm image path
    print(image_folder_path + img_name)
 
+   
+   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+      s.connect(("127.0.0.1",1002))
 
-   # Send the name over to server
-   s.send(bytes(img_name, 'utf-8'))
+      # Send the name over to server
+      s.send(bytes(img_name, 'utf-8'))
 
 
 
@@ -40,14 +43,17 @@ for img_name in imgs :
    
 
    img_data = file.read(2048)
+   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+      s.connect(("127.0.0.1",1002))
+      # While there's still more data, send the data over
+      while img_data:
+         s.send(img_data)
+         img_data = file.read(2048)
+         time.sleep(0.001)
+  
 
-   # While there's still more data, send the data over
-   while img_data:
-      s.send(img_data)
-      img_data = file.read(2048)
 
-
-   time.sleep(0.001)
+  
   
    # Close the file
    file.close()
