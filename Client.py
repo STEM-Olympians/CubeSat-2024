@@ -1,23 +1,29 @@
-"""
-A simple Python script to send messages to a sever over Bluetooth using
-Python sockets (with Python 3.3 or above).
-"""
-
 import socket
 import time
 
 from os import listdir, stat
 from os.path import isfile, join
 
+# CONFIG: ======================================
+
+# Bluetooth address of YOUR LAPTOP
+# Run hciconfig on the raspberry pi while your laptop is connected over bluetooth to find this address
+serverMACAddress = 'A4:C3:F0:51:C0:AB'
+
+# ==============================================
+
+
+
 # Calculate the start time
 start = time.time()
 
-serverMACAddress = 'A4:C3:F0:51:C0:AB'
-port = 6
+# 6 is an arbitrary choice. However, it must match the port used by the server.
+port = 6 
 s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
 s.connect((serverMACAddress,port))
 
 image_folder_path = "/home/olympians/Olympian/Images/"
+
 imgs = [img for img in listdir(image_folder_path) if isfile(join(image_folder_path, img))]
 
 print(imgs)

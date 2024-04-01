@@ -1,18 +1,27 @@
-"""
-A simple Python script to receive messages from a client over
-Bluetooth using Python sockets (with Python 3.3 or above).
-"""
-
 import socket
 
-hostMACAddress = 'A4:C3:F0:51:C0:AB' # The MAC address of a Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
-port = 6 # 6 is an arbitrary choice. However, it must match the port used by the client.
+
+# CONFIG: ======================================
+
+# Bluetooth address of YOUR LAPTOP
+# Run hciconfig on the raspberry pi while your laptop is connected over bluetooth to find this address
+hostMACAddress = 'A4:C3:F0:51:C0:AB' 
+
+# Directory you want to write to
+# Make sure it exists before running this program
+directory_to_write = "C:/Users/admin/Documents/Repos/CubeSat-2024/Images/"
+
+# ==============================================
+
+
+# 6 is an arbitrary choice. However, it must match the port used by the client.
+port = 6 
 
 size = 4096
 
 prev_name = ""
 img_name = ""
-directory_to_write = "C:/Users/admin/Documents/Repos/CubeSat-2024/Images/"
+
 
 prev_mode = ""
 mode = "message"
