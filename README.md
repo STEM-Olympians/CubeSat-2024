@@ -8,7 +8,7 @@
 6) Go to Server.py, line 8 and paste that address into: "hostMACAddress = [your address here]"
 7) Create a new folder where you want images to be stored
 8) Copy the absolute file path
-9) Go to Server.py, line 12 and paste it into "directory_to_write = [address here]"
+9) Go to Server.py, line 12 and paste it into "directory_to_write = [address here]"\
 ^^ the address wouldn't work for me, without using forward slashes
 
 No need to install, as all packages used are within python standard library
