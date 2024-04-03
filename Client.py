@@ -8,7 +8,7 @@ from os.path import isfile, join
 
 # Bluetooth address of YOUR LAPTOP
 # Run hciconfig on the raspberry pi while your laptop is connected over bluetooth to find this address
-serverMACAddress = 'A4:C3:F0:51:C0:AB'
+serverMACAddress = 'D8:3A:DD:8E:CE:FA'
 
 # ==============================================
 

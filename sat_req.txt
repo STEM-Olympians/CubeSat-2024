@@ -1,0 +1,3 @@
+sudo apt install -y python3-picamera2
+sudo pip3 install adafruit-circuitpython-lsm6ds --break-system-packages
+sudo pip3 install adafruit-circuitpython-lis3mdl --break-system-packages

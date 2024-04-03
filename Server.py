@@ -5,11 +5,12 @@ import socket
 
 # Bluetooth address of YOUR LAPTOP
 # Run hciconfig on the raspberry pi while your laptop is connected over bluetooth to find this address
-hostMACAddress = 'A4:C3:F0:51:C0:AB' 
+hostMACAddress = 'D8:3A:DD:8E:CE:FA'
+# hostMACAddress = '10:9F:41:C0:9E:E6'
 
 # Directory you want to write to
 # Make sure it exists before running this program
-directory_to_write = "C:/Users/admin/Documents/Repos/CubeSat-2024/Images/"
+directory_to_write = "/Users/raheyo/CubeSat-2024/Images/"
 
 # ==============================================
 
@@ -68,22 +69,21 @@ with socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOM
 
                     prev_mode = mode
                     print(mode)
-                match mode:
-                                            
-                    case "name":
+                
+                if mode == "name":
                         img_name = data.decode("utf-8")                        
                         print(img_name)
-                    case "image":
-                            
-                        if(img_name != ""):
-                            # print("ok")
-                            if not opened:
-                                file = open(directory_to_write + img_name, "wb+")
-                                opened = True
-                                print("open")
+                elif mode == "image":
                         
-                            file.write(data)
-                            # print("Write")
-                    case "message" | _:
-                        print(data.decode("utf-8"))
-                
+                    if(img_name != ""):
+                        # print("ok")
+                        if not opened:
+                            file = open(directory_to_write + img_name, "wb+")
+                            opened = True
+                            print("open")
+                    
+                        file.write(data)
+                        # print("Write")
+                elif mode == "message" | _:
+                    print(data.decode("utf-8"))
+            
