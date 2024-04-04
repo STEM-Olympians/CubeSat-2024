@@ -14,7 +14,7 @@ No need to install, as all packages used are within python standard library
 
 1. Connect to Raspberry PI over bluetooth
 2. Ensure you have some way of SSHing or VNCing into it, and do it
-3. Send Client.py, FlatSat_student.py, and some dummy images over through SSH or VNC:
+3. Send Client.py, FlatSat_student.py, Config.py, and some dummy images over through SSH or VNC:
    scp /Users/raheyo/CubeSat-2024/Client.py olympians@grapefruitpi.local:/home/olympians/Olympian/
    scp /Users/raheyo/CubeSat-2024/FlatSat_student.py olympians@grapefruitpi.local:/home/olympians/Olympian/
 
