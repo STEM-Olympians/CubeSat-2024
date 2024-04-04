@@ -4,7 +4,7 @@ import Config
 
 import Buffer
 
-HOST = ''
+HOST = Config.server_bluetooth_address
 PORT = 2345
 
 
@@ -14,7 +14,7 @@ except FileExistsError:
     pass
 
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+with socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM) as s:
     s.bind((HOST, PORT))
     s.listen(10)
     print("Waiting for a connection.....")

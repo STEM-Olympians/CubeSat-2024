@@ -6,13 +6,11 @@ import Config
 
 import Buffer
 
-HOST = '127.0.0.1'
+HOST = Config.server_bluetooth_address
 PORT = 2345
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
-
-with s:
+with socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM) as s:
+    s.connect((HOST, PORT))
     sbuf = Buffer.Buffer(s)
 
    
