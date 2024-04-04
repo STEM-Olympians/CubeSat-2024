@@ -6,6 +6,7 @@ import socket
 from os import listdir, stat
 from os.path import isfile, join
 import time
+import struct
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1",1002))
@@ -20,43 +21,67 @@ imgs = [img for img in listdir(image_folder_path) if isfile(join(image_folder_pa
 
 totalBytes = 0
 
-# Iterate over all the images we found
-for img_name in imgs :
-   
-   # Confirm image path
-   print(image_folder_path + img_name)
 
-   
-   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-      s.connect(("127.0.0.1",1002))
+def send_msg(sock, msg):
+    # Prefix each message with a 4-byte length (network byte order)
+    msg = struct.pack('>I', len(msg)) + msg
+    
+    sock.sendall(msg)
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+   s.connect(("127.0.0.1",1002))
+
+   # Iterate over all the images we found
+   for img_name in imgs :
+      
+      # Confirm image path
+      print(image_folder_path + img_name)
+
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+      s.sendall(b'NO')
+
 
       # Send the name over to server
-      s.send(bytes(img_name, 'utf-8'))
+      send_msg(s, bytes(img_name, 'utf-8'))
+      send_msg(s, bytes(img_name, 'utf-8'))
+      send_msg(s, bytes(img_name, 'utf-8'))
+      send_msg(s, bytes(img_name, 'utf-8'))
+      send_msg(s, bytes(img_name, 'utf-8'))
+     
+      totalBytes += stat(image_folder_path + img_name).st_size
 
 
+      # Open file and begin reading data in 2048 byte chunks
+      # file = open(image_folder_path + img_name, 'rb')
+      
 
-   totalBytes += stat(image_folder_path + img_name).st_size
-
-
-   # Open file and begin reading data in 2048 byte chunks
-   file = open(image_folder_path + img_name, 'rb')
-   
-
-   img_data = file.read(2048)
-   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-      s.connect(("127.0.0.1",1002))
-      # While there's still more data, send the data over
-      while img_data:
-         s.send(img_data)
-         img_data = file.read(2048)
-         time.sleep(0.001)
-  
-
+      # img_data = file.read(2048)
 
   
-  
-   # Close the file
-   file.close()
+      # while img_data:
+      #    send_msg(s, img_data)
+      #    img_data = file.read(2048) 
+      
+      # # Close the file
+      # file.close()
 
 # Calculate the end time and time taken
 end = time.time()

@@ -18,6 +18,7 @@ prev_msg = ""
 prev_mode = ""
 mode = "message"
 
+aaa = ""
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         
@@ -32,11 +33,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             while True:
                 data = client.recv(size)
                 if not data:
-                    # print("no")
+                    if(aaa != "no"):
+                        print("no")
+                        aaa = "no"
                     continue
             
                 try:  
                     msg = data.decode("utf-8")
+                    print(msg)
+                    aaa = "msg"
 
                     if(msg[:4] == "MSG:") and prev_msg != msg:
                         mode = "message"
@@ -56,6 +61,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                     prev_mode = mode
                     print(mode)
+
+
+
+                    
                 match mode:
                                             
                     case "name":

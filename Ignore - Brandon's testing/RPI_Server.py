@@ -11,7 +11,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1",1002))
 
 
-image_folder_path = "C:/Users/admin/Documents/Repos/CubeSat-2024/Images/"
+image_folder_path = "C:/Users/user/Documents/CubeSat-2024/Images/"
 imgs = [img for img in listdir(image_folder_path) if isfile(join(image_folder_path, img))]
 
 for img_name in imgs :
@@ -22,17 +22,6 @@ for img_name in imgs :
 
    s.send(name)
 
-   # msg = s.recv(2048)
-   # print(msg)
-   # print(len(msg))
-   # while len(msg) == 0:
-   #    print(msg)
-   #    print(len(msg))
-   #    time.sleep(1)
-   #    msg = s.recv(2048)
-   
-   # print(msg)
-   # time.sleep(0.005)
    file = open(image_folder_path + img_name, 'rb')
    
    img_data = file.read(2048)
