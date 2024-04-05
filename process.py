@@ -1,6 +1,7 @@
 import numpy as np 
 from PIL import Image
-from tensorflow.keras.preprocessing import image
+import tensorflow as tf
+from keras.preprocessing import image
 
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -68,8 +69,11 @@ def show_image(image_path):
   plt.show()
 
 # define the path of the images
-square1 = './Images/timessquare1.jpeg'
+square0 = './Images/timessquare0.jpeg'
+square1 = './Images/timessquare1.png'
 square2 = './Images/timessquare2.jpeg'
+square3 = './Images/timessquare3.jpg'
+square4 = './Images/timessquare4.jpg'
 mit = './Images/MIT.jpeg'
 
 
@@ -84,7 +88,7 @@ def trigger(before, after):
     similarity_score = get_similarity_score(before, after)
     print(f"Similarity score: {similarity_score}")
 
-    if similarity_score > THRESHOLD:
+    if similarity_score < THRESHOLD:
         return True
     else:
         return False
@@ -102,7 +106,8 @@ def building_segmentation(image):
     
     # # Not sure if using the pre-embedded weights is better or not, but we can try both later
     # img_emb = get_image_embeddings(img)
-    show_image(image)
+    
+    # show_image(image)
 
     pass
 
@@ -125,5 +130,11 @@ def process(image1, image2):
         print("No flood detected")
         return False
 
-
-process(square1, square2)
+print("Similarity score between square0 and square2")
+process(square0, square2)
+print("Similarity score between square0 and square3")
+process(square0, square3)
+print("Similarity score between square0 and square4")
+process(square0, square4)
+print("Similarity score between square0 and MIT")
+process(square0, mit)

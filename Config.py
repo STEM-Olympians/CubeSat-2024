@@ -11,4 +11,8 @@ directory_to_read= "Images/"
 # You can find this by running hciconfig
 # It will return a list of connected devices (your laptop)
 # Copy and paste that address here
-server_bluetooth_address = 'A4:C3:F0:51:C0:AB'
+server_bluetooth_address = 'D8:3A:DD:8E:CE:FA'
+client_bluetooth_address = '10:9F:41:C0:9E:E6'
+
+# Port: Any number that is not being used by another service
+PORT = 1
