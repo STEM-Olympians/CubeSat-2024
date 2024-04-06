@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 
 # Where you want to store all your images (on your laptop)
 # This will be in local directory of the repo 
@@ -16,3 +18,9 @@ client_bluetooth_address = '10:9F:41:C0:9E:E6'
 
 # Port: Any number that is not being used by another service
 PORT = 1
+
+# CubeSat Modes
+class Mode(IntEnum):
+    NOMINAL=0
+    COMM=1
+    SLEEP=2

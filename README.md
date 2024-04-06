@@ -14,17 +14,22 @@ No need to install, as all packages used are within python standard library
 
 1. Connect to Raspberry PI over bluetooth
 2. Ensure you have some way of SSHing or VNCing into it, and do it
-3. Send SatServer.py, FlatSat_student.py, Config.py, Buffer.py, and some dummy images over through SSH or VNC:
+3. Send SatServer.py, FlatSat_student.py, Config.py, Buffer.py, sat_req.txt, and some dummy images over through SSH or VNC:
+   scp /Users/raheyo/CubeSat-2024/sat_req.txt olympians@grapefruitpi.local:/home/olympians/Olympian/
+
    scp /Users/raheyo/CubeSat-2024/SatServer.py olympians@grapefruitpi.local:/home/olympians/Olympian/
    scp /Users/raheyo/CubeSat-2024/Config.py olympians@grapefruitpi.local:/home/olympians/Olympian/
    scp /Users/raheyo/CubeSat-2024/Buffer.py olympians@grapefruitpi.local:/home/olympians/Olympian/
-   scp /Users/raheyo/CubeSat-2024/FlatSat_student.py olympians@grapefruitpi.local:/home/olympians/Olympian/
+   scp /Users/raheyo/CubeSat-2024/Nominal.py olympians@grapefruitpi.local:/home/olympians/Olympian/
 
-   scp /Users/raheyo/CubeSat-2024/Images/timessquare0.jpeg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
-   scp /Users/raheyo/CubeSat-2024/Images/timessquare1.png olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
-   scp /Users/raheyo/CubeSat-2024/Images/timessquare2.jpeg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
-   scp /Users/raheyo/CubeSat-2024/Images/timessquare3.jpg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
-   scp /Users/raheyo/CubeSat-2024/Images/timessquare4.jpg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
+   If you want dummy images on the Pi just to test out the Bluetooth file transfers, here are some you can use!
+   scp /Users/raheyo/CubeSat-2024/Images/square0.jpeg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
+   scp /Users/raheyo/CubeSat-2024/Images/square1.png olympians@grapefruitpi.local:/home/olympians/Olympian/Images/s
+   scp /Users/raheyo/CubeSat-2024/Images/square2.jpeg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
+
+   Suggest not using these ones, file too large to transfer over bluetooth:
+   scp /Users/raheyo/CubeSat-2024/Images/square3.jpg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
+   scp /Users/raheyo/CubeSat-2024/Images/square4.jpg olympians@grapefruitpi.local:/home/olympians/Olympian/Images/
 
 4. Send the cubesat server environment configurations over scp:
    scp /Users/raheyo/CubeSat-2024/sat_req.txt olympians@grapefruitpi.local:/home/olympians/Olympian/
@@ -44,7 +49,23 @@ sudo apt-get install libbluetooth-dev
 
 ## For both cubesat server and Mac ground station client install PyBluez:
 
+### For for mac ground station it's easy:
+
 pip install pybluez
+
+### For the cubesat server: download pybluez zip file from https://pybluez.readthedocs.io/en/latest/install.html to your computer:
+
+for me it's in the /user/raheyo/Downloads/ folder on my mac, file location different on Windows
+
+then scp over to the pi:
+scp /Users/raheyo/Downloads/pybluez-master.zip olympians@grapefruitpi.local:/home/olympians/Olympian/
+
+lastly on the Pi, in your repo directory unzip the file, cd into the folder and run the setup.py:
+unzip pybluez-master.zip
+cd pybluez-master
+sudo python setup.py install
+
+DON'T FORGET THE "SUDO" IN THE LAST COMMAND OR ELSE IT WOULDN'T WORK
 
 # Troublshooting
 
@@ -52,10 +73,27 @@ pip install pybluez
 
 ssh-keygen -R grapefruitpi.local
 
+## Error while installing pybluez on the Pi: <bluetooth.h> file not found
+
+You forgot to do the REQUIRED part before installing pybluez, refer back to it and don't be lazy~
+
 ## Bluetooth error: raise \_socket.error(result, OSError: [Errno -536870212] Cannot connect to 1 on D8:3A:DD:8E:CE:FA
 
 That just means soemthing is wrong with your code, bad programmer skill issue!!! @\_@
 
-## Error while installing pybluez on the Pi: <bluetooth.h> file not found
+## Bluetooth error: raise \_socket.error(errno.ECONNRESET, os.strerror(errno.ECONNRESET)) ConnectionResetError: [Errno 54] Connection reset by peer
 
-You forgot to do the REQUIRED part before installing pybluez, refer back to it and don't be lazy~
+That means you are closing the connection EARLY from one end of the socket (server or client), which cause the other code to fall short and not able to run.
+TO FIX:
+Check that you don't use the socket.close() function too much in the middle of the code for either the server or the client~
+
+## Permission denied on the Pi: [Errno 13] Permission denied: '/usr/local/lib/python3.11/dist-packages/test-easy-install-2831.write-test'
+
+Use "sudo" before your linux command on the Pi. The system doesn't trust you right now because you're remotely controlling it through ssh~
+
+## Camera Preview Error: qt.qpa.xcb: could not connect to display qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found. This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+
+export QT_QPA_PLATFORM=offscreen
+sudo apt update
+sudo apt upgrade -y
+sudo rpi-update pulls/5691

@@ -124,7 +124,6 @@ def process(image1, image2):
         print("Flood detected")
         building_segmentation(image2)
 
-
         return True
     else:
         print("No flood detected")
