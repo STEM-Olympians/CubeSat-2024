@@ -51,7 +51,7 @@ sudo apt-get install libbluetooth-dev
 
 ### For for mac ground station it's easy:
 
-pip install pybluez
+pip install git+https://github.com/pybluez/pybluez.git#egg=pybluez
 
 ### For the cubesat server: download pybluez zip file from https://pybluez.readthedocs.io/en/latest/install.html to your computer:
 
@@ -77,6 +77,14 @@ ssh-keygen -R grapefruitpi.local
 
 You forgot to do the REQUIRED part before installing pybluez, refer back to it and don't be lazy~
 
+## Bluetooth error: subprocess-exited-with-error; × python setup.py egg_info did not run successfully.
+
+This means your pybluez package has some error. Reinstall it completely and install it again with the desired command with "egginfo" specified
+sudo pip uninstall pybluez
+pip install git+https://github.com/pybluez/pybluez.git#egg=pybluez
+
+## Bluetooth error: File "/Users/raheyo/.pyenv/versions/3.9.18/lib/python3.9/site-packages/lightblue/_bluetoothsockets.py", line 787, in initWithDelegate_: self = super().init(); AttributeError: 'super' object has no attribute 'init'
+
 ## Bluetooth error: raise \_socket.error(result, OSError: [Errno -536870212] Cannot connect to 1 on D8:3A:DD:8E:CE:FA
 
 That just means soemthing is wrong with your code, bad programmer skill issue!!! @\_@
@@ -93,7 +101,9 @@ Use "sudo" before your linux command on the Pi. The system doesn't trust you rig
 
 ## Camera Preview Error: qt.qpa.xcb: could not connect to display qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found. This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
 
+### This one is a bit annoying, cuz YOU HAVE TO THIS EVERY NEW TIME YOU SSH INTO IT AND CONNECT
+
 export QT_QPA_PLATFORM=offscreen
 sudo apt update
 sudo apt upgrade -y
-sudo rpi-update pulls/5691
+sudo rpi-update pulls/5691s

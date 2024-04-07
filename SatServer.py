@@ -8,15 +8,14 @@ from Nominal import nominal
 
 PORT = Config.PORT
 
+# Create a socket and bind it to the port, the socket is configured to be bluetooth with Radio Frequency Communication type
 server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 server_sock.bind((Config.server_bluetooth_address, PORT))
 server_sock.listen(1)  # Listen for connections made to the socket
+connection, client_address = server_sock.accept()
+print("Message Connected to", client_address)
 
 def Server():
-    # Create a socket and bind it to the port, the socket is configured to be bluetooth with Radio Frequency Communication type
-    connection, client_address = server_sock.accept()
-    print("Message Connected to", client_address)
-
     # Receiv Client Request Command through the msg port
     msgMiddlewear = Buffer.Buffer(connection)
     request = int(msgMiddlewear.get_utf8())
@@ -26,12 +25,14 @@ def Server():
     print("Responding Request...")
     dataMiddlewear = Buffer.Buffer(connection)
     
-    match int(request):
+    match request:
         # Communication Mode: Send all the stored pictures
         case Config.Mode.COMM:
             print("Request Received: COMMUNICATION")
-                    
-            imgs = [img for img in listdir(Config.directory_to_read) if isfile(join(Config.directory_to_read, img))]
+            
+            imgs = listdir(Config.directory_to_read)
+            imgs.sort(reverse=True)
+            imgs = [img for img in imgs if isfile(join(Config.directory_to_read, img))]
 
             for img in imgs:
                 img_path = join(Config.directory_to_read, img)
@@ -46,12 +47,15 @@ def Server():
                     dataMiddlewear.put_bytes(f.read())
                 
                 print('File Sent')
+
+            dataMiddlewear.put_utf8("COMMUNICATION MODE COMPLETED~")
         
         # Nominal Mode: Take Pictures Every 12 Second
         case Config.Mode.NOMINAL:
             print("Request Received: NOMINAL")
-
+            
             nominal()
+            dataMiddlewear.put_utf8("NOMINAL MODE COMPLETED~")
             
 
         case Config.Mode.SLEEP:

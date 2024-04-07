@@ -21,7 +21,7 @@ class Buffer:
         return data
 
     def put_bytes(self,data):
-        self.sock.send(data)
+        self.sock.sendall(data)
 
     def get_utf8(self):
         '''Read a null-terminated UTF8 data string and decode it.
@@ -36,7 +36,11 @@ class Buffer:
         data,_,self.buffer = self.buffer.partition(b'\x00')
         return data.decode()
 
-    def put_utf8(self,s):
+    def put_utf8(self,s,isServer=True):
         if '\x00' in s:
             raise ValueError('string contains delimiter(null)')
-        self.sock.send(s.encode() + b'\x00')
+        
+        if isServer:
+            self.sock.sendall(s.encode() + b'\x00')
+        else:
+            self.sock.send(s.encode() + b'\x00')

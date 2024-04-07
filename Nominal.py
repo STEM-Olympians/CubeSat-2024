@@ -30,18 +30,20 @@ FOLDER_PATH = Config.directory_to_read   #Your image folder path in your GitHub 
 # mag = LIS3MDL(i2c)
 picam2 = Picamera2()
 
-def img_name_gen(name):
+def img_path_gen(name):
     """
     This function is complete. Generates a new image name.
 
     Parameters:
         name (str): your name ex. MasonM
     """
-    t = time.strftime("%H%M%S")
-    save_dir = os.path.join(REPO_PATH, FOLDER_PATH)
-    imgname = (f'{os.path.join(save_dir, t)}.jpg')
+    t = time.strftime("_%H%M%S")
+    imgname = name + t
 
-    return imgname
+    save_dir = os.path.join(REPO_PATH, FOLDER_PATH)
+    imgPath = (f'{os.path.join(save_dir, imgname)}.jpg')
+
+    return imgPath
 
 def take_photo():
     """
@@ -64,17 +66,19 @@ def take_photo():
         # print(f"Acceleration Y-axis: {accely}")
         # print(f"Acceleration Z-axis: {accelz}")
 
-        filepath = img_name_gen()
+        filepath = img_path_gen("test")
         print(filepath)
         picam2.capture_file(filepath)
 
-        time.sleep(3)
+        time.sleep(2)
 
         if time.time() - t0 >= time_limit:
             break
 
     picam2.stop_preview()
     picam2.stop()
+
+    print("PICTURES COMPLETED~")
     
         
 def nominal():
