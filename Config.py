@@ -16,6 +16,9 @@ directory_to_read= "Images/"
 server_bluetooth_address = 'D8:3A:DD:8E:CE:FA'
 client_bluetooth_address = '10:9F:41:C0:9E:E6'
 
+# Geolocation API
+publicKey = 'AIzaSyBnVRLDNtY07sCicWFoXdmVLn07G-hXDso'
+
 # Port: Any number that is not being used by another service
 PORT = 1
 
