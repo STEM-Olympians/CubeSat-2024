@@ -1,5 +1,11 @@
+import time
+
 import Config
 
-file_name = "fadfa"
-if not (file_name) or not (".jpg" in file_name):
-    print("Not file name")
+t0 = time.time()
+
+time.sleep(3)
+
+dt = time.time() - t0
+
+print(dt)

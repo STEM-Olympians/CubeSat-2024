@@ -18,6 +18,7 @@ import board
 from picamera2 import Picamera2, Preview
 
 import Config
+import Geo
 
 #VARIABLES
 THRESHOLD = 0      #Any desired value from the accelerometer
@@ -37,7 +38,7 @@ def img_path_gen(name):
     Parameters:
         name (str): your name ex. MasonM
     """
-    t = time.strftime("_%H%M%S")
+    t = time.strftime("_%D%H%M%S")
     imgname = name + t
 
     save_dir = os.path.join(REPO_PATH, FOLDER_PATH)
@@ -61,18 +62,20 @@ def take_photo():
     picam2.start()
 
     while True:
+        dt = time.time() - t0
         # accelx, accely, accelz = accel_gyro.acceleration
         # print(f"Acceleration X-axis: {accelx}")
         # print(f"Acceleration Y-axis: {accely}")
         # print(f"Acceleration Z-axis: {accelz}")
 
-        filepath = img_path_gen("test")
+        current_lat, current_lng = geo.geo_step(dt)
+        filepath = img_path_gen(f"{current_lat}/{current_lng}")
         print(filepath)
         picam2.capture_file(filepath)
 
-        time.sleep(2)
+        # time.sleep(2)
 
-        if time.time() - t0 >= time_limit:
+        if dt >= time_limit:
             break
 
     picam2.stop_preview()
