@@ -18,7 +18,7 @@ import board
 from picamera2 import Picamera2, Preview
 
 import Config
-import Geo
+from Geo import geo_step
 
 #VARIABLES
 THRESHOLD = 0      #Any desired value from the accelerometer
@@ -38,8 +38,8 @@ def img_path_gen(name):
     Parameters:
         name (str): your name ex. MasonM
     """
-    t = time.strftime("_%D%H%M%S")
-    imgname = name + t
+    t = time.strftime("%H%M%S_")
+    imgname = t + name
 
     save_dir = os.path.join(REPO_PATH, FOLDER_PATH)
     imgPath = (f'{os.path.join(save_dir, imgname)}.jpg')
@@ -52,8 +52,8 @@ def take_photo():
     Replace psuedocode with your own code.
     """
     t0 = time.time()
-    time_limit = 10
-    # Captures approximately 5 pictures~
+    time_limit = 3.6
+    # Captures approximately 3 pictures~
 
     camera_config = picam2.create_preview_configuration()
     picam2.configure(camera_config)
@@ -68,12 +68,12 @@ def take_photo():
         # print(f"Acceleration Y-axis: {accely}")
         # print(f"Acceleration Z-axis: {accelz}")
 
-        current_lat, current_lng = geo.geo_step(dt)
-        filepath = img_path_gen(f"{current_lat}/{current_lng}")
+        current_lat, current_lng = geo_step(dt)
+        filepath = img_path_gen(f"{current_lat}*{current_lng}")
         print(filepath)
         picam2.capture_file(filepath)
 
-        # time.sleep(2)
+        time.sleep(0.6)
 
         if dt >= time_limit:
             break

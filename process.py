@@ -2,13 +2,17 @@ import numpy as np
 from PIL import Image
 import tensorflow as tf
 from keras.preprocessing import image
+import os
+from os.path import join
 
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 from keras.applications.vgg16 import VGG16
 from sklearn.metrics.pairwise import cosine_similarity
+import shutil
 
+import Config
 
 embLayer = VGG16(weights='imagenet', include_top=False, 
               pooling='max', input_shape=(224, 224, 3))
@@ -69,15 +73,15 @@ def show_image(image_path):
   plt.show()
 
 # define the path of the images
-square0 = './Images/timessquare0.jpeg'
-square1 = './Images/timessquare1.png'
-square2 = './Images/timessquare2.jpeg'
-square3 = './Images/timessquare3.jpg'
-square4 = './Images/timessquare4.jpg'
-mit = './Images/MIT.jpeg'
+before0 = './Before/0.jpg'
+before1 = './Before/1.jpg'
+before2 = './Before/2.jpg'
+after0 = './After/0.jpg'
+after1 = './After/1.jpg'
+after2 = './After/2.jpg'
 
 
-THRESHOLD = 0.7
+THRESHOLD = 0.8
 def trigger(before, after):
     """
         -----------------------------------------------------
@@ -111,29 +115,45 @@ def building_segmentation(image):
 
     pass
 
-def process(image1, image2):
+
+def moveDirectory(origin, destination):
+    shutil.move(origin, destination)
+
+
+def process():
     """
         -----------------------------------------------------
         Process the images and return the generated map if flood is detected, otherwise does nothing in nominal mode.
         -----------------------------------------------------
         return similarity score
     """
-    triggered = trigger(image1, image2)
+
+    imgs = os.listdir(Config.directory_to_write)
+    imgs.sort()
+
+    for img in imgs[:3]:
+        imgPath = join(Config.directory_to_write, img)
+        destination = join("./Before", img)
+        moveDirectory(imgPath, destination)
+
+    for img in imgs[3:]:
+        imgPath = join(Config.directory_to_write, img)
+        destination = join("./After", img)
+        moveDirectory(imgPath, destination)
+
+    befores = os.listdir("./Before")
+    afters = os.listdir("./After")
     
-    if triggered:
-        print("Flood detected")
-        building_segmentation(image2)
+    for i in range(3):
+        before = join("./Before", befores[i])
+        after = join("./After", afters[i])
+        
+        triggered = trigger(before, after)
 
-        return True
-    else:
-        print("No flood detected")
-        return False
+        if triggered:
+            print(f"Flood Detected in the {i+1}/3 of Times Square")
 
-print("Similarity score between square0 and square2")
-process(square0, square2)
-print("Similarity score between square0 and square3")
-process(square0, square3)
-print("Similarity score between square0 and square4")
-process(square0, square4)
-print("Similarity score between square0 and MIT")
-process(square0, mit)
+        else:
+            print(f"No flood detected in the {i+1}/3 of Times Square")
+
+process()

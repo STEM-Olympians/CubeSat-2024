@@ -31,7 +31,7 @@ def Server():
             print("Request Received: COMMUNICATION")
             
             imgs = listdir(Config.directory_to_read)
-            imgs.sort(reverse=True)
+            imgs.sort()
             imgs = [img for img in imgs if isfile(join(Config.directory_to_read, img))]
 
             for img in imgs:

@@ -13,7 +13,7 @@ geocode_result = gmaps.geocode(address)
 
 lat = geocode_result[0]['geometry']['location']['lat']
 lng = geocode_result[0]['geometry']['location']['lng']
-print(f"Geocode Results for Lillly's Address: Latitude={lat}; Longitude={lng}")
+print(f"Geocode Results for Somebody's Address: Latitude={lat}; Longitude={lng}")
 print("\n")
 
 # Look up an address with reverse geocoding
@@ -29,7 +29,7 @@ reverse_geocode_result = gmaps.reverse_geocode((lat, lng))
 
 # steps = directions_result[0]['legs'][0]['steps']
 # instructions = [step['html_instructions'] for step in steps]
-# print("Direction Results to Lillly's Address from Burlingame Public Library: ",)
+# print("Direction Results to Somebody's Address from Burlingame Public Library: ",)
 # for instruction in instructions:
 #     print(f"\t{instruction}")
 # print("\n")
@@ -40,7 +40,7 @@ reverse_geocode_result = gmaps.reverse_geocode((lat, lng))
 #                                                     locality='Burlingame', 
 #                                                     enableUspsCass=True)
 # valid_confirmation = addressvalidation_result['result']['address']['addressComponents'][0]['confirmationLevel']
-# print(f"Is Lillly's House a Valid Address: {valid_confirmation}")
+# print(f"Is Somebody's House a Valid Address: {valid_confirmation}")
 
 inclination = 51
 earthRadius = 6366707.0195
@@ -51,7 +51,8 @@ orbitCircumference = 2 * math.pi * orbitRadius
 
 # Arclength / circumference * 360 degrees = the degree change
 satVelocity = 7666.11111111
-dTheta = satVelocity / orbitCircumference * 360
+demoSatVelocity = 100.00824693267894
+dTheta = demoSatVelocity / orbitCircumference * 360
 
 # Calculate the rate of change in ground location as the Cubesat flies over
 groundVelocity = dTheta * orbitCircumference / 360

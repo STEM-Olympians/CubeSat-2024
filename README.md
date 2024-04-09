@@ -93,7 +93,7 @@ That just means soemthing is wrong with your code, bad programmer skill issue!!!
 
 That means you are closing the connection EARLY from one end of the socket (server or client), which cause the other code to fall short and not able to run.
 TO FIX:
-Check that you don't use the socket.close() function too much in the middle of the code for either the server or the client~
+Check that there is no error from the other end of the connection that caused the connection to break early. Also check that you don't use the socket.close() function too much in the middle of the code for either the server or the client~
 
 ## Permission denied on the Pi: [Errno 13] Permission denied: '/usr/local/lib/python3.11/dist-packages/test-easy-install-2831.write-test'
 
